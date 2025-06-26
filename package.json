@@ -1,0 +1,46 @@
+{
+  "name": "out-of-office-app",
+  "version": "1.0.0",
+  "description": "A web app for team members to mark out-of-office status and send Teams meeting invites",
+  "private": true,
+  "dependencies": {
+    "@azure/msal-browser": "^3.7.0",
+    "@azure/msal-react": "^2.0.8",
+    "@microsoft/microsoft-graph-client": "^3.0.7",
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "typescript": "^4.9.5",
+    "web-vitals": "^3.5.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.8"
+  }
+} 

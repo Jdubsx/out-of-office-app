@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Out of Office App - Simple Version</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background: white;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #0078d4;
+            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #0078d4, #106ebe);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 120, 212, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            color: #1565c0;
+        }
+
+        .info-box h3 {
+            margin-bottom: 0.5rem;
+            color: #0d47a1;
+        }
+
+        .info-box ul {
+            margin-left: 1rem;
+        }
+
+        .info-box li {
+            margin-bottom: 0.25rem;
+        }
+
+        .teams-details {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .teams-details h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .teams-details .detail-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .teams-details .detail-label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.25rem;
+        }
+
+        .teams-details .detail-value {
+            color: #333;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Out of Office Request</h1>
+        
+        <div class="info-box">
+            <h3>📋 How it works:</h3>
+            <ul>
+                <li>Fill out the form below with your out-of-office details</li>
+                <li>We'll generate Teams meeting details for you to copy</li>
+                <li>You can then create the Teams meeting manually or share the details</li>
+            </ul>
+        </div>
+
+        <form id="outOfOfficeForm">
+            <div class="form-group">
+                <label for="employeeName">Your Name:</label>
+                <input 
+                    type="text" 
+                    id="employeeName" 
+                    name="employeeName" 
+                    required
+                    placeholder="Enter your full name"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">Start Date:</label>
+                <input 
+                    type="date" 
+                    id="startDate" 
+                    name="startDate" 
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">End Date:</label>
+                <input 
+                    type="date" 
+                    id="endDate" 
+                    name="endDate" 
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="reason">Reason:</label>
+                <textarea 
+                    id="reason" 
+                    name="reason" 
+                    required
+                    placeholder="Please provide a brief reason for your absence..."
+                ></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="managerEmail">Manager Email:</label>
+                <input 
+                    type="email" 
+                    id="managerEmail" 
+                    name="managerEmail" 
+                    required
+                    placeholder="manager@company.com"
+                >
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                Generate Teams Meeting Details
+            </button>
+        </form>
+
+        <div id="message" class="message" style="display: none;"></div>
+
+        <div id="teamsDetails" class="teams-details">
+            <h3>📅 Teams Meeting Details</h3>
+            <div class="detail-item">
+                <div class="detail-label">Subject:</div>
+                <div class="detail-value" id="meetingSubject"></div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Date & Time:</div>
+                <div class="detail-value" id="meetingDateTime"></div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Attendees:</div>
+                <div class="detail-value" id="meetingAttendees"></div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Description:</div>
+                <div class="detail-value" id="meetingDescription"></div>
+            </div>
+            <button class="copy-btn" onclick="copyToClipboard()">Copy All Details</button>
+        </div>
+    </div>
+
+    <script>
+        // Set today's date as minimum for start date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('startDate').min = today;
+        document.getElementById('endDate').min = today;
+
+        // Set minimum end date based on start date
+        document.getElementById('startDate').addEventListener('change', function() {
+            document.getElementById('endDate').min = this.value;
+        });
+
+        document.getElementById('outOfOfficeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const messageDiv = document.getElementById('message');
+            const teamsDetailsDiv = document.getElementById('teamsDetails');
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Generating...';
+            messageDiv.style.display = 'none';
+            teamsDetailsDiv.style.display = 'none';
+            
+            // Get form data
+            const formData = new FormData(this);
+            const employeeName = formData.get('employeeName');
+            const startDate = formData.get('startDate');
+            const endDate = formData.get('endDate');
+            const reason = formData.get('reason');
+            const managerEmail = formData.get('managerEmail');
+            
+            // Simulate processing
+            setTimeout(() => {
+                // Generate Teams meeting details
+                const startDateTime = new Date(startDate);
+                const endDateTime = new Date(endDate);
+                
+                // Format dates
+                const startFormatted = startDateTime.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                const endFormatted = endDateTime.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                // Populate Teams details
+                document.getElementById('meetingSubject').textContent = `Out of Office: ${employeeName} - ${reason}`;
+                document.getElementById('meetingDateTime').textContent = `${startFormatted} to ${endFormatted}`;
+                document.getElementById('meetingAttendees').textContent = managerEmail;
+                document.getElementById('meetingDescription').textContent = 
+                    `${employeeName} will be out of office from ${startFormatted} to ${endFormatted}.\n\nReason: ${reason}\n\nPlease contact them for urgent matters.`;
+                
+                // Show success message and Teams details
+                messageDiv.className = 'message success';
+                messageDiv.textContent = 'Teams meeting details generated successfully!';
+                messageDiv.style.display = 'block';
+                teamsDetailsDiv.style.display = 'block';
+                
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Generate Teams Meeting Details';
+                
+                // Hide message after 5 seconds
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 5000);
+            }, 1000);
+        });
+
+        function copyToClipboard() {
+            const subject = document.getElementById('meetingSubject').textContent;
+            const dateTime = document.getElementById('meetingDateTime').textContent;
+            const attendees = document.getElementById('meetingAttendees').textContent;
+            const description = document.getElementById('meetingDescription').textContent;
+            
+            const textToCopy = `Teams Meeting Details:
+Subject: ${subject}
+Date & Time: ${dateTime}
+Attendees: ${attendees}
+Description: ${description}`;
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const copyBtn = document.querySelector('.copy-btn');
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                copyBtn.style.background = '#6c757d';
+                
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.style.background = '#28a745';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html> 
