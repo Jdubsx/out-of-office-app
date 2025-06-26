@@ -32,17 +32,16 @@ function App() {
       <div className="app">
         <div className="login-container">
           <header className="app-header">
-            <img src="/alltec-logo.png" alt="Alltec Logo" style={{ height: 48, marginRight: 16 }} />
-            <span className="app-title">Alltec Out of Office Manager</span>
+            <span className="app-title centered-title">Out of Office Manager</span>
+            <button 
+              onClick={handleLogin} 
+              disabled={isLoading}
+              className="login-button"
+            >
+              {isLoading ? 'Signing in...' : 'Sign in with Microsoft'}
+            </button>
           </header>
           <p>Please sign in to manage your out-of-office status</p>
-          <button 
-            onClick={handleLogin} 
-            disabled={isLoading}
-            className="login-button"
-          >
-            {isLoading ? 'Signing in...' : 'Sign in with Microsoft'}
-          </button>
         </div>
       </div>
     );
@@ -51,11 +50,12 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <img src="/alltec-logo.png" alt="Alltec Logo" style={{ height: 48, marginRight: 16 }} />
-        <span className="app-title">Alltec Out of Office Manager</span>
-        <button onClick={handleLogout} className="logout-button">
-          Sign Out
-        </button>
+        <span className="app-title centered-title">Out of Office Manager</span>
+        {isAuthenticated && (
+          <button onClick={handleLogout} className="logout-button">
+            Sign Out
+          </button>
+        )}
       </header>
       <main className="app-main">
         <OutOfOfficeForm />
