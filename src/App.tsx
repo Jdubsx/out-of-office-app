@@ -24,7 +24,8 @@ function App() {
   };
 
   const handleLogout = () => {
-    instance.logoutPopup();
+    const account = instance.getActiveAccount();
+    instance.logoutPopup({ account });
   };
 
   if (!isAuthenticated) {
