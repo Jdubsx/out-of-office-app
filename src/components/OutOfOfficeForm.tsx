@@ -80,23 +80,23 @@ const OutOfOfficeForm: React.FC = () => {
     let endDateTime: string;
     if (formData.isFullDay) {
       // All day event: use date only, set time to 00:00 and 23:59
-      startDateTime = new Date(formData.startDate + 'T00:00:00Z').toISOString();
-      endDateTime = new Date(formData.endDate + 'T23:59:00Z').toISOString();
+      startDateTime = formData.startDate + 'T00:00:00';
+      endDateTime = formData.endDate + 'T23:59:00';
     } else {
-      // Use date and time
-      startDateTime = new Date(formData.startDate + 'T' + formData.startTime + ':00Z').toISOString();
-      endDateTime = new Date(formData.endDate + 'T' + formData.endTime + ':00Z').toISOString();
+      // Use date and time (local, no Z)
+      startDateTime = formData.startDate + 'T' + formData.startTime + ':00';
+      endDateTime = formData.endDate + 'T' + formData.endTime + ':00';
     }
 
     const meeting = {
       subject: `Out of Office: ${formData.reason}`,
       start: {
         dateTime: startDateTime,
-        timeZone: 'UTC'
+        timeZone: 'Eastern Standard Time'
       },
       end: {
         dateTime: endDateTime,
-        timeZone: 'UTC'
+        timeZone: 'Eastern Standard Time'
       },
       attendees: [
         {
