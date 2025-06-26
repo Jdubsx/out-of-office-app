@@ -56,6 +56,8 @@
 }
 
 .app-header {
+  min-height: 112px;
+  height: 112px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,11 +94,26 @@
 }
 
 .logout-button {
+  background: var(--alltec-yellow);
+  color: var(--alltec-blue);
+  border: 2px solid var(--alltec-blue);
+  padding: 0.7rem 1.4rem;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
   position: absolute;
   right: 2rem;
   top: 50%;
   transform: translateY(-50%);
   z-index: 1;
+}
+
+.logout-button:hover {
+  background: var(--alltec-blue);
+  color: #fff;
+  border: 2px solid var(--alltec-yellow);
 }
 
 .app-main {
