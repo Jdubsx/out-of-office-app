@@ -30,18 +30,19 @@ function App() {
   if (!isAuthenticated) {
     return (
       <div className="app">
-        <div className="login-container">
-          <header className="app-header">
-            <span className="app-title centered-title">Out of Office Manager</span>
-            <button 
-              onClick={handleLogin} 
-              disabled={isLoading}
-              className="login-button"
-            >
-              {isLoading ? 'Signing in...' : 'Sign in with Microsoft'}
-            </button>
-          </header>
+        <header className="app-header">
+          <img src="/alltec-logo.png" alt="Alltec Logo" className="header-logo" />
+          <span className="app-title centered-title">Out of Office Manager</span>
+        </header>
+        <div className="login-content">
           <p>Please sign in to manage your out-of-office status</p>
+          <button 
+            onClick={handleLogin} 
+            disabled={isLoading}
+            className="login-button"
+          >
+            {isLoading ? 'Signing in...' : 'Sign in with Microsoft'}
+          </button>
         </div>
       </div>
     );
