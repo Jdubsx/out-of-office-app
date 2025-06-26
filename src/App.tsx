@@ -31,7 +31,7 @@ function App() {
     return (
       <div className="app">
         <header className="app-header">
-          <img src="/alltec-logo.png" alt="Alltec Logo" className="header-logo" />
+          <img src="/Alltec-logo.png" alt="Alltec Logo" className="header-logo" />
           <span className="app-title centered-title">Out of Office Manager</span>
         </header>
         <div className="login-content">
@@ -51,7 +51,7 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <img src="/alltec-logo.png" alt="Alltec Logo" className="header-logo" />
+        <img src="/Alltec-logo.png" alt="Alltec Logo" className="header-logo" />
         <span className="app-title centered-title">Out of Office Manager</span>
         {isAuthenticated && (
           <button onClick={handleLogout} className="logout-button">
