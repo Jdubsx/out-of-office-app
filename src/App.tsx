@@ -34,6 +34,7 @@ function App() {
         <header className="app-header">
           <img src="/alltec-logo.png" alt="Alltec Logo" className="header-logo" />
           <span className="app-title centered-title">Out of Office Manager</span>
+          <div className="header-spacer"></div>
         </header>
         <div className="login-content">
           <p>Please sign in to record your out-of-office time</p>
@@ -54,11 +55,9 @@ function App() {
       <header className="app-header">
         <img src="/alltec-logo.png" alt="Alltec Logo" className="header-logo" />
         <span className="app-title centered-title">Out of Office Manager</span>
-        {isAuthenticated && (
-          <button onClick={handleLogout} className="logout-button">
-            Sign Out
-          </button>
-        )}
+        <button onClick={handleLogout} className="logout-button">
+          Sign Out
+        </button>
       </header>
       <main className="app-main">
         <OutOfOfficeForm />

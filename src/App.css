@@ -109,6 +109,11 @@
   text-overflow: ellipsis;
 }
 
+.header-spacer {
+  flex-shrink: 0;
+  width: 120px; /* Approximate width of logout button */
+}
+
 .logout-button {
   background: var(--alltec-yellow);
   color: var(--alltec-blue);
@@ -121,6 +126,7 @@
   transition: background 0.2s, color 0.2s, border 0.2s;
   z-index: 1;
   flex-shrink: 0;
+  min-width: 120px;
 }
 
 .logout-button:hover {
@@ -220,6 +226,12 @@
   .app-header {
     padding: 1rem;
   }
+  .header-spacer {
+    width: 100px;
+  }
+  .logout-button {
+    min-width: 100px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -236,9 +248,13 @@
     font-size: 1.2rem;
     margin: 0 0.5rem;
   }
+  .header-spacer {
+    width: 80px;
+  }
   .logout-button {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
+    min-width: 80px;
   }
   .app-main {
     padding: 1rem 0;
@@ -273,9 +289,13 @@
     font-size: 1rem;
     margin: 0 0.25rem;
   }
+  .header-spacer {
+    width: 60px;
+  }
   .logout-button {
     padding: 0.4rem 0.8rem;
     font-size: 0.8rem;
+    min-width: 60px;
   }
   .form-container {
     padding: 0 0.25rem;
