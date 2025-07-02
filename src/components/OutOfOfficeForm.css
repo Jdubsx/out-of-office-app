@@ -115,5 +115,54 @@
   
   .form-card h2 {
     font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .out-of-office-form {
+    gap: 1.2rem;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    padding: 0.8rem;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  .submit-button {
+    padding: 0.9rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 0 0.5rem;
+  }
+  
+  .form-card {
+    padding: 1rem;
+  }
+  
+  .form-card h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .out-of-office-form {
+    gap: 1rem;
+  }
+  
+  .form-group label {
+    font-size: 0.9rem;
+  }
+  
+  .form-group input,
+  .form-group textarea {
+    padding: 0.7rem;
+  }
+  
+  .submit-button {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.95rem;
   }
 } 

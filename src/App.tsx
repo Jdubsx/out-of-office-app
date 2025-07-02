@@ -36,7 +36,7 @@ function App() {
           <span className="app-title centered-title">Out of Office Manager</span>
         </header>
         <div className="login-content">
-          <p>Please sign in to manage your out-of-office status</p>
+          <p>Please sign in to record your out-of-office time</p>
           <button 
             onClick={handleLogin} 
             disabled={isLoading}

@@ -3,7 +3,7 @@ import { useMsal } from '@azure/msal-react';
 import { Client } from '@microsoft/microsoft-graph-client';
 import './OutOfOfficeForm.css';
 
-interface OutOfOfficeRequest {
+interface OutOfOfficeTime {
   startDate: string;
   endDate: string;
   startTime?: string;
@@ -15,7 +15,7 @@ interface OutOfOfficeRequest {
 
 const OutOfOfficeForm: React.FC = () => {
   const { instance } = useMsal();
-  const [formData, setFormData] = useState<OutOfOfficeRequest>({
+  const [formData, setFormData] = useState<OutOfOfficeTime>({
     startDate: '',
     endDate: '',
     startTime: '09:00',
@@ -26,36 +26,36 @@ const OutOfOfficeForm: React.FC = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const [requests, setRequests] = useState<OutOfOfficeRequest[]>([]);
+  const [outOfOfficeTimes, setOutOfOfficeTimes] = useState<OutOfOfficeTime[]>([]);
 
-  // Load requests from localStorage on mount
+  // Load out-of-office times from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem('ooo_requests');
+    const stored = localStorage.getItem('ooo_times');
     if (stored) {
-      setRequests(JSON.parse(stored));
+      setOutOfOfficeTimes(JSON.parse(stored));
     }
   }, []);
 
-  // Remove expired requests on mount and every minute
+  // Remove expired out-of-office times on mount and every minute
   useEffect(() => {
     const interval = setInterval(() => {
-      removeExpiredRequests();
+      removeExpiredTimes();
     }, 60000);
-    removeExpiredRequests();
+    removeExpiredTimes();
     return () => clearInterval(interval);
-  }, [requests]);
+  }, [outOfOfficeTimes]);
 
-  const removeExpiredRequests = () => {
+  const removeExpiredTimes = () => {
     const now = new Date();
-    const filtered = requests.filter(req => {
-      const end = req.isFullDay
-        ? new Date(req.endDate + 'T23:59:00')
-        : new Date(req.endDate + 'T' + (req.endTime || '17:00'));
+    const filtered = outOfOfficeTimes.filter(time => {
+      const end = time.isFullDay
+        ? new Date(time.endDate + 'T23:59:00')
+        : new Date(time.endDate + 'T' + (time.endTime || '17:00'));
       return end > now;
     });
-    if (filtered.length !== requests.length) {
-      setRequests(filtered);
-      localStorage.setItem('ooo_requests', JSON.stringify(filtered));
+    if (filtered.length !== outOfOfficeTimes.length) {
+      setOutOfOfficeTimes(filtered);
+      localStorage.setItem('ooo_times', JSON.stringify(filtered));
     }
   };
 
@@ -140,15 +140,15 @@ const OutOfOfficeForm: React.FC = () => {
 
       await createTeamsMeeting(response.accessToken);
 
-      // Save request to localStorage
-      const newRequest = { ...formData };
-      const updatedRequests = [...requests, newRequest];
-      setRequests(updatedRequests);
-      localStorage.setItem('ooo_requests', JSON.stringify(updatedRequests));
+      // Save out-of-office time to localStorage
+      const newTime = { ...formData };
+      const updatedTimes = [...outOfOfficeTimes, newTime];
+      setOutOfOfficeTimes(updatedTimes);
+      localStorage.setItem('ooo_times', JSON.stringify(updatedTimes));
 
       setMessage({
         type: 'success',
-        text: 'Out of office request submitted successfully! A Teams meeting has been sent to your manager.'
+        text: 'Out of office time submitted successfully! A Teams meeting has been sent to your manager.'
       });
 
       // Reset form
@@ -163,26 +163,26 @@ const OutOfOfficeForm: React.FC = () => {
       });
 
     } catch (error) {
-      console.error('Error submitting request:', error);
+      console.error('Error submitting out-of-office time:', error);
       setMessage({
         type: 'error',
-        text: 'Failed to submit request. Please try again.'
+        text: 'Failed to submit out-of-office time. Please try again.'
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleDeleteRequest = (idx: number) => {
-    const updated = requests.filter((_, i) => i !== idx);
-    setRequests(updated);
-    localStorage.setItem('ooo_requests', JSON.stringify(updated));
+  const handleDeleteTime = (idx: number) => {
+    const updated = outOfOfficeTimes.filter((_, i) => i !== idx);
+    setOutOfOfficeTimes(updated);
+    localStorage.setItem('ooo_times', JSON.stringify(updated));
   };
 
   return (
     <div className="form-container" style={{ display: 'flex', gap: '2rem' }}>
       <div className="form-card" style={{ flex: 1 }}>
-        <h2>Submit Out of Office Request</h2>
+        <h2>Submit Out of Office Time</h2>
         <form onSubmit={handleSubmit} className="out-of-office-form">
           <div className="form-group">
             <label>
@@ -282,34 +282,34 @@ const OutOfOfficeForm: React.FC = () => {
             disabled={isSubmitting}
             className="submit-button"
           >
-            {isSubmitting ? 'Submitting...' : 'Submit Request'}
+            {isSubmitting ? 'Submitting...' : 'Submit Out-of-Office Time'}
           </button>
         </form>
       </div>
       <div className="ooo-sidebar" style={{ minWidth: 320, maxWidth: 400 }}>
-        <h3>Your Out-of-Office Requests</h3>
-        {requests.length === 0 && <div style={{ color: '#888' }}>No upcoming requests.</div>}
-        {requests.map((req, idx) => {
-          const start = req.isFullDay
-            ? new Date(req.startDate + 'T00:00:00')
-            : new Date(req.startDate + 'T' + (req.startTime || '09:00'));
-          const end = req.isFullDay
-            ? new Date(req.endDate + 'T23:59:00')
-            : new Date(req.endDate + 'T' + (req.endTime || '17:00'));
+        <h3>Your Out-of-Office Times</h3>
+        {outOfOfficeTimes.length === 0 && <div style={{ color: '#888' }}>No upcoming out-of-office times.</div>}
+        {outOfOfficeTimes.map((time, idx) => {
+          const start = time.isFullDay
+            ? new Date(time.startDate + 'T00:00:00')
+            : new Date(time.startDate + 'T' + (time.startTime || '09:00'));
+          const end = time.isFullDay
+            ? new Date(time.endDate + 'T23:59:00')
+            : new Date(time.endDate + 'T' + (time.endTime || '17:00'));
           return (
             <div key={idx} style={{ background: '#f8f9fa', border: '1px solid #e1e5e9', borderRadius: 8, padding: 16, marginBottom: 16, position: 'relative' }}>
               <button
-                onClick={() => handleDeleteRequest(idx)}
+                onClick={() => handleDeleteTime(idx)}
                 style={{ position: 'absolute', top: 8, right: 8, background: '#dc3545', color: 'white', border: 'none', borderRadius: 4, padding: '2px 10px', cursor: 'pointer', fontSize: 14 }}
-                title="Delete request"
+                title="Delete out-of-office time"
               >
                 ×
               </button>
-              <div><b>Reason:</b> {req.reason}</div>
+              <div><b>Reason:</b> {time.reason}</div>
               <div><b>From:</b> {start.toLocaleString()}</div>
               <div><b>To:</b> {end.toLocaleString()}</div>
-              <div><b>Manager:</b> {req.managerEmail}</div>
-              <div><b>Type:</b> {req.isFullDay ? 'Full Day' : 'Partial Day'}</div>
+              <div><b>Manager:</b> {time.managerEmail}</div>
+              <div><b>Type:</b> {time.isFullDay ? 'Full Day' : 'Partial Day'}</div>
             </div>
           );
         })}
